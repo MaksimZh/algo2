@@ -42,16 +42,69 @@ class BST:
             return True
 
     def FinMinMax(self, FromNode, FindMax):
-        # ищем максимальный/минимальный ключ в поддереве
-        # возвращается объект типа BSTNode
-        return None
+        node = FromNode
+        if FindMax:
+            get_next_node = lambda n: n.RightChild
+        else:
+            get_next_node = lambda n: n.LeftChild
+        while True:
+            next = get_next_node(node)
+            if next is None:
+                return node
+            node = next
 
     def DeleteNodeByKey(self, key):
-        # удаляем узел по ключу
-        return False # если узел не найден
+        f = self.FindNodeByKey(key)
+        if not f.NodeHasKey:
+            return False
+        node_parent = f.Node.Parent
+        self.__detach_node(f.Node)
+        if f.Node.RightChild is None and f.Node.LeftChild is None:
+            return True
+        if f.Node.LeftChild is None:
+            self.__move_node(f.Node.RightChild, node_parent)
+            return True
+        if f.Node.RightChild is None:
+            self.__move_node(f.Node.LeftChild, node_parent)
+            return True
+        successor_node = self.FinMinMax(f.Node.RightChild, False)
+        
+        successor_parent = successor_node.Parent
+        self.__detach_node(successor_node)
+        if successor_node.RightChild is not None and successor_parent is not f.Node:
+            self.__move_node(successor_node.RightChild, successor_parent)
+        self.__attach_node(successor_node, node_parent)
+        
+        if f.Node.RightChild is not None:
+            self.__move_node(f.Node.RightChild, successor_node)
+        self.__move_node(f.Node.LeftChild, successor_node)
+        return True
+        
 
     def Count(self):
         return 0 # количество узлов в дереве
+
+    def __move_node(self, node, new_parent):
+        self.__detach_node(node)
+        self.__attach_node(node, new_parent)
+
+    def __detach_node(self, node):
+        if node.Parent is None:
+            self.Root = None
+        elif node.Parent.LeftChild == node:
+            node.Parent.LeftChild = None
+        else:
+            node.Parent.RightChild = None
+        node.Parent = None
+
+    def __attach_node(self, node, new_parent):
+        node.Parent = new_parent
+        if new_parent is None:
+            self.Root = node
+        elif node.NodeKey < new_parent.NodeKey:
+            new_parent.LeftChild = node
+        else:
+            new_parent.RightChild = node
 
 
 def _find(node, key):
