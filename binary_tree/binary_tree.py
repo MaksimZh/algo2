@@ -28,11 +28,18 @@ class BST:
             return _find(self.Root, key)
 
     def AddKeyValue(self, key, val):
-        if self.Root is None:
+        f = self.FindNodeByKey(key)
+        if f.Node is None:
             self.Root = BSTNode(key, val, None)
             return True
+        elif f.NodeHasKey:
+            return False
+        elif f.ToLeft:
+            f.Node.LeftChild = BSTNode(key, val, f.Node)
+            return True
         else:
-            return _add(self.Root, key, val)
+            f.Node.RightChild = BSTNode(key, val, f.Node)
+            return True
 
     def FinMinMax(self, FromNode, FindMax):
         # ищем максимальный/минимальный ключ в поддереве
@@ -77,25 +84,3 @@ def _find_right(node, key):
         return f
     else:
         return _find(node.RightChild, key)
-
-def _add(node, key, val):
-    if key == node.NodeKey:
-        return False
-    elif key < node.NodeKey:
-        return _add_left(node, key, val)
-    else:
-        return _add_right(node, key, val)
-
-def _add_left(node, key, val):
-    if node.LeftChild is None:
-        node.LeftChild = BSTNode(key, val, node)
-        return True
-    else:
-        return _add(node.LeftChild, key, val)
-
-def _add_right(node, key, val):
-    if node.RightChild is None:
-        node.RightChild = BSTNode(key, val, node)
-        return True
-    else:
-        return _add(node.RightChild, key, val)
