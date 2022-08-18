@@ -829,6 +829,40 @@ class Test(unittest.TestCase):
             )
         )
 
+    def test_count(self):
+        bst = BST(None)
+        self.assertEqual(bst.Count(), 0)
+        
+        bst.AddKeyValue(10, "a")
+        self.assertEqual(bst.Count(), 1)
+        
+        bst.AddKeyValue(5, "b")
+        self.assertEqual(bst.Count(), 2)
+        
+        bst.AddKeyValue(15, "c")
+        self.assertEqual(bst.Count(), 3)
+        
+        bst.AddKeyValue(13, "d")
+        self.assertEqual(bst.Count(), 4)
+        
+        bst.AddKeyValue(18, "e")
+        self.assertEqual(bst.Count(), 5)
+        
+        bst.AddKeyValue(12, "f")
+        self.assertEqual(bst.Count(), 6)
+        
+        bst.AddKeyValue(14, "g")
+        self.assertEqual(bst.Count(), 7)
+        
+        bst.AddKeyValue(16, "h")
+        self.assertEqual(bst.Count(), 8)
+        
+        bst.AddKeyValue(19, "i")
+        self.assertEqual(bst.Count(), 9)
+        
+        bst.AddKeyValue(17, "j")
+        self.assertEqual(bst.Count(), 10)
+        
 
 if __name__ == "__main__":
     unittest.main()

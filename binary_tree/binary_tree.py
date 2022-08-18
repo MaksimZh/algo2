@@ -82,7 +82,7 @@ class BST:
         
 
     def Count(self):
-        return 0 # количество узлов в дереве
+        return _count(self.Root)
 
     def __move_node(self, node, new_parent):
         self.__detach_node(node)
@@ -137,3 +137,9 @@ def _find_right(node, key):
         return f
     else:
         return _find(node.RightChild, key)
+
+def _count(node):
+    if node is None:
+        return 0
+    else:
+        return _count(node.LeftChild) + 1 + _count(node.RightChild)
