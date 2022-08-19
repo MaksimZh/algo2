@@ -24,22 +24,20 @@ class BST:
     def FindNodeByKey(self, key):
         if self.Root is None:
             return BSTFind()
-        else:
-            return _find(self.Root, key)
+        return _find(self.Root, key)
 
     def AddKeyValue(self, key, val):
         f = self.FindNodeByKey(key)
         if f.Node is None:
             self.Root = BSTNode(key, val, None)
             return True
-        elif f.NodeHasKey:
+        if f.NodeHasKey:
             return False
-        elif f.ToLeft:
+        if f.ToLeft:
             f.Node.LeftChild = BSTNode(key, val, f.Node)
             return True
-        else:
-            f.Node.RightChild = BSTNode(key, val, f.Node)
-            return True
+        f.Node.RightChild = BSTNode(key, val, f.Node)
+        return True
 
     def FinMinMax(self, FromNode, FindMax):
         node = FromNode
@@ -141,10 +139,9 @@ def _find(node, key):
         f.Node = node
         f.NodeHasKey = True
         return f
-    elif key < node.NodeKey:
+    if key < node.NodeKey:
         return _find_left(node, key)
-    else:
-        return _find_right(node, key)
+    return _find_right(node, key)
 
 def _find_left(node, key):
     if node.LeftChild is None:
@@ -153,8 +150,7 @@ def _find_left(node, key):
         f.NodeHasKey = False
         f.ToLeft = True
         return f
-    else:
-        return _find(node.LeftChild, key)
+    return _find(node.LeftChild, key)
 
 def _find_right(node, key):
     if node.RightChild is None:
@@ -163,14 +159,12 @@ def _find_right(node, key):
         f.NodeHasKey = False
         f.ToLeft = False
         return f
-    else:
-        return _find(node.RightChild, key)
+    return _find(node.RightChild, key)
 
 def _count(node):
     if node is None:
         return 0
-    else:
-        return _count(node.LeftChild) + 1 + _count(node.RightChild)
+    return _count(node.LeftChild) + 1 + _count(node.RightChild)
 
 def _deep_all_nodes(root, reorder):
     if root is None:
