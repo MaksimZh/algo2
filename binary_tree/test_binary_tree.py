@@ -875,24 +875,36 @@ class Test(unittest.TestCase):
         bst.AddKeyValue(6, "e")
         bst.AddKeyValue(13, "f")
         bst.AddKeyValue(17, "g")
-        bst.AddKeyValue(12, "h")
-        bst.AddKeyValue(14, "i")
-        bst.AddKeyValue(16, "j")
-        bst.AddKeyValue(18, "k")
+        bst.AddKeyValue(1, "h")
+        bst.AddKeyValue(7, "i")
+        bst.AddKeyValue(12, "j")
+        bst.AddKeyValue(14, "k")
+        bst.AddKeyValue(16, "l")
+        bst.AddKeyValue(18, "m")
+        bst.AddKeyValue(8, "n")
         self.check_tree(bst,
             (10, "a",
                 (5, "b",
-                    (4, "d", None, None),
-                    (6, "e", None, None),
+                    (4, "d",
+                        (1, "h", None, None),
+                        None,
+                    ),
+                    (6, "e",
+                        None,
+                        (7, "i",
+                            None,
+                            (8, "n", None, None),
+                        ),
+                    ),
                 ),
                 (15, "c",
                     (13, "f",
-                        (12, "h", None, None),
-                        (14, "i", None, None),
+                        (12, "j", None, None),
+                        (14, "k", None, None),
                     ),
                     (17, "g",
-                        (16, "j", None, None),
-                        (18, "k", None, None),
+                        (16, "l", None, None),
+                        (18, "m", None, None),
                     ),
                 ),
             )
@@ -907,12 +919,122 @@ class Test(unittest.TestCase):
             (6, "e"),
             (13, "f"),
             (17, "g"),
-            (12, "h"),
-            (14, "i"),
-            (16, "j"),
-            (18, "k"),
+            (1, "h"),
+            (7, "i"),
+            (12, "j"),
+            (14, "k"),
+            (16, "l"),
+            (18, "m"),
+            (8, "n"),
         ])
+
+
+    def test_deep_all_nodes(self):
+        self.assertEqual(BST.IN_ORDER, 0)
+        self.assertEqual(BST.POST_ORDER, 1)
+        self.assertEqual(BST.PRE_ORDER, 2)
         
+        bst = BST(None)
+        self.assertEqual(bst.DeepAllNodes(BST.IN_ORDER), [])
+        self.assertEqual(bst.DeepAllNodes(BST.POST_ORDER), [])
+        self.assertEqual(bst.DeepAllNodes(BST.PRE_ORDER), [])
+
+        bst.AddKeyValue(10, "a")
+        bst.AddKeyValue(5, "b")
+        bst.AddKeyValue(15, "c")
+        bst.AddKeyValue(4, "d")
+        bst.AddKeyValue(6, "e")
+        bst.AddKeyValue(13, "f")
+        bst.AddKeyValue(17, "g")
+        bst.AddKeyValue(1, "h")
+        bst.AddKeyValue(7, "i")
+        bst.AddKeyValue(12, "j")
+        bst.AddKeyValue(14, "k")
+        bst.AddKeyValue(16, "l")
+        bst.AddKeyValue(18, "m")
+        bst.AddKeyValue(8, "n")
+        self.check_tree(bst,
+            (10, "a",
+                (5, "b",
+                    (4, "d",
+                        (1, "h", None, None),
+                        None,
+                    ),
+                    (6, "e",
+                        None,
+                        (7, "i",
+                            None,
+                            (8, "n", None, None),
+                        ),
+                    ),
+                ),
+                (15, "c",
+                    (13, "f",
+                        (12, "j", None, None),
+                        (14, "k", None, None),
+                    ),
+                    (17, "g",
+                        (16, "l", None, None),
+                        (18, "m", None, None),
+                    ),
+                ),
+            )
+        )
+
+        nodes = bst.DeepAllNodes(BST.IN_ORDER)
+        self.assertEqual([(n.NodeKey, n.NodeValue) for n in nodes], [
+            (1, "h"),
+            (4, "d"),
+            (5, "b"),
+            (6, "e"),
+            (7, "i"),
+            (8, "n"),
+            (10, "a"),
+            (12, "j"),
+            (13, "f"),
+            (14, "k"),
+            (15, "c"),
+            (16, "l"),
+            (17, "g"),
+            (18, "m"),
+        ])
+
+        nodes = bst.DeepAllNodes(BST.POST_ORDER)
+        self.assertEqual([(n.NodeKey, n.NodeValue) for n in nodes], [
+            (1, "h"),
+            (4, "d"),
+            (8, "n"),
+            (7, "i"),
+            (6, "e"),
+            (5, "b"),
+            (12, "j"),
+            (14, "k"),
+            (13, "f"),
+            (16, "l"),
+            (18, "m"),
+            (17, "g"),
+            (15, "c"),
+            (10, "a"),
+        ])
+
+        nodes = bst.DeepAllNodes(BST.PRE_ORDER)
+        self.assertEqual([(n.NodeKey, n.NodeValue) for n in nodes], [
+            (10, "a"),
+            (5, "b"),
+            (4, "d"),
+            (1, "h"),
+            (6, "e"),
+            (7, "i"),
+            (8, "n"),
+            (15, "c"),
+            (13, "f"),
+            (12, "j"),
+            (14, "k"),
+            (17, "g"),
+            (16, "l"),
+            (18, "m"),
+        ])
+
 
 if __name__ == "__main__":
     unittest.main()
