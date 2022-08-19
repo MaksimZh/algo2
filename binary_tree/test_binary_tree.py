@@ -862,6 +862,56 @@ class Test(unittest.TestCase):
         
         bst.AddKeyValue(17, "j")
         self.assertEqual(bst.Count(), 10)
+
+    
+    def test_wide_all_nodes(self):
+        bst = BST(None)
+        self.assertEqual(bst.WideAllNodes(), [])
+
+        bst.AddKeyValue(10, "a")
+        bst.AddKeyValue(5, "b")
+        bst.AddKeyValue(15, "c")
+        bst.AddKeyValue(4, "d")
+        bst.AddKeyValue(6, "e")
+        bst.AddKeyValue(13, "f")
+        bst.AddKeyValue(17, "g")
+        bst.AddKeyValue(12, "h")
+        bst.AddKeyValue(14, "i")
+        bst.AddKeyValue(16, "j")
+        bst.AddKeyValue(18, "k")
+        self.check_tree(bst,
+            (10, "a",
+                (5, "b",
+                    (4, "d", None, None),
+                    (6, "e", None, None),
+                ),
+                (15, "c",
+                    (13, "f",
+                        (12, "h", None, None),
+                        (14, "i", None, None),
+                    ),
+                    (17, "g",
+                        (16, "j", None, None),
+                        (18, "k", None, None),
+                    ),
+                ),
+            )
+        )
+
+        nodes = bst.WideAllNodes()
+        self.assertEqual([(n.NodeKey, n.NodeValue) for n in nodes], [
+            (10, "a"),
+            (5, "b"),
+            (15, "c"),
+            (4, "d"),
+            (6, "e"),
+            (13, "f"),
+            (17, "g"),
+            (12, "h"),
+            (14, "i"),
+            (16, "j"),
+            (18, "k"),
+        ])
         
 
 if __name__ == "__main__":

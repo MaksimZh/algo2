@@ -84,6 +84,21 @@ class BST:
     def Count(self):
         return _count(self.Root)
 
+
+    def WideAllNodes(self):
+        if self.Root is None:
+            return []
+        nodes = [self.Root]
+        i = 0
+        while i < len(nodes):
+            if nodes[i].LeftChild is not None:
+                nodes.append(nodes[i].LeftChild)
+            if nodes[i].RightChild is not None:
+                nodes.append(nodes[i].RightChild)
+            i += 1
+        return nodes
+
+
     def __move_node(self, node, new_parent):
         self.__detach_node(node)
         self.__attach_node(node, new_parent)
