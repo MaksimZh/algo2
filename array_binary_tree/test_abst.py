@@ -88,6 +88,21 @@ class Test(unittest.TestCase):
             5, 15, 25, None,
             None, 7, None, 17, 22, None, None, None])
 
+        self.assertEqual(t.AddKey(20), 0)
+        self.assertEqual(t.AddKey(10), 1)
+        self.assertEqual(t.AddKey(30), 2)
+        self.assertEqual(t.AddKey(5), 3)
+        self.assertEqual(t.AddKey(15), 4)
+        self.assertEqual(t.AddKey(25), 5)
+        self.assertEqual(t.AddKey(7), 8)
+        self.assertEqual(t.AddKey(17), 10)
+        self.assertEqual(t.AddKey(22), 11)
+        self.assertEqual(t.Tree, [
+            20,
+            10, 30,
+            5, 15, 25, None,
+            None, 7, None, 17, 22, None, None, None])
+
     
     def test_find(self):
         t = aBST(3)

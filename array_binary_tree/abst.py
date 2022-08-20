@@ -14,7 +14,7 @@ class aBST:
 	
     def AddKey(self, key):
         index = self.__find_index(key, 0)
-        if index is None or self.Tree[index] is not None:
+        if index is None:
             return -1
         self.Tree[index] = key
         return index
