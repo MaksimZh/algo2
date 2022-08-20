@@ -6,7 +6,7 @@ from abst import aBST
 class Test(unittest.TestCase):
 
     def test_add(self):
-        t = aBST(4)
+        t = aBST(3)
         self.assertEqual(t.Tree, [
             None,
             None, None,
@@ -90,7 +90,7 @@ class Test(unittest.TestCase):
 
     
     def test_find(self):
-        t = aBST(4)
+        t = aBST(3)
         t.AddKey(20)
         t.AddKey(10)
         t.AddKey(30)
