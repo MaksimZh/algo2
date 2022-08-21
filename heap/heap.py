@@ -36,6 +36,8 @@ class Heap:
 
             index = parent_index
             del parent_index
+        
+        return True
 
 
 def _left_child_index(i):
