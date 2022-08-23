@@ -286,10 +286,82 @@ class Test(unittest.TestCase):
         self.assertEqual(t.Count(), 9)
         self.assertEqual(t.LeafCount(), 6)
 
+
 import tree
 class TestTree(Test):
     Tree = tree.SimpleTree
     TreeNode = tree.SimpleTreeNode
+
+    def test_even_trees(self):
+        t = self.Tree(None)
+        self.assertEqual(t.EvenTrees(), [])
+
+        n1 = self.TreeNode(1, None)
+        t.AddChild(None, n1)
+        self.assertEqual(t.EvenTrees(), [])
+
+        n2 = self.TreeNode(2, None)
+        t.AddChild(n1, n2)
+        self.assertEqual(t.EvenTrees(), [])
+
+        n3 = self.TreeNode(3, None)
+        t.AddChild(n1, n3)
+        self.assertEqual(t.EvenTrees(), [])
+
+        n4 = self.TreeNode(4, None)
+        t.AddChild(n3, n4)
+        self.assertEqual(t.EvenTrees(), [n1, n3])
+
+        n5 = self.TreeNode(5, None)
+        t.AddChild(n2, n5)
+        self.assertEqual(t.EvenTrees(), [])
+
+        n6 = self.TreeNode(6, None)
+        t.AddChild(n1, n6)
+        et = t.EvenTrees()
+        self.assertEqual(set(zip(et[0::2], et[1::2])), set([
+            (n1, n2),
+            (n1, n3),
+        ]))
+
+        n7 = self.TreeNode(7, None)
+        t.AddChild(n2, n7)
+        self.assertEqual(t.EvenTrees(), [])
+        
+        n8 = self.TreeNode(8, None)
+        t.AddChild(n6, n8)
+        et = t.EvenTrees()
+        self.assertEqual(set(zip(et[0::2], et[1::2])), set([
+            (n1, n3),
+            (n1, n6),
+        ]))
+
+        n9 = self.TreeNode(9, None)
+        t.AddChild(n8, n9)
+        self.assertEqual(t.EvenTrees(), [])
+
+        n10 = self.TreeNode(10, None)
+        t.AddChild(n8, n10)
+        et = t.EvenTrees()
+        self.assertEqual(set(zip(et[0::2], et[1::2])), set([
+            (n1, n3),
+            (n1, n6),
+        ]))
+
+        n11 = self.TreeNode(11, None)
+        t.AddChild(n4, n11)
+        self.assertEqual(t.EvenTrees(), [])
+
+        n12 = self.TreeNode(12, None)
+        t.AddChild(n7, n12)
+        et = t.EvenTrees()
+        self.assertEqual(set(zip(et[0::2], et[1::2])), set([
+            (n2, n7),
+            (n3, n4),
+            (n1, n2),
+            (n1, n6),
+        ]))
+
 
 import tree_x
 class TestTreeX(Test):
