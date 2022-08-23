@@ -281,11 +281,13 @@ class Test(unittest.TestCase):
 
 class TestSearch(unittest.TestCase):
 
-    def check_path(self, g, vertices, start, finish):
+    def check_path(self, g, vertices, start, finish, length = None):
         self.assertEqual(vertices[0].Value, start)
         self.assertEqual(vertices[-1].Value, finish)
         for i in range(1, len(vertices)):
             self.assertTrue(g.IsEdge(vertices[i - 1].Value, vertices[i].Value))
+        if length is not None:
+            self.assertEqual(len(vertices), length)
 
 
     def test_depth(self):
@@ -326,6 +328,56 @@ class TestSearch(unittest.TestCase):
         for i in range(8):
             for j in range(8):
                 self.check_path(g, g.DepthFirstSearch(i, j), i, j)
+
+    def test_breadth(self):
+        g = SimpleGraph(10)
+        
+        g.AddVertex(0)
+        self.check_path(g, g.BreadthFirstSearch(0, 0), 0, 0, 1)
+        
+        g.AddVertex(1)
+        self.assertEqual(g.BreadthFirstSearch(0, 1), [])
+        g.AddEdge(0, 1)
+        self.check_path(g, g.BreadthFirstSearch(0, 0), 0, 0, 1)
+        self.check_path(g, g.BreadthFirstSearch(0, 1), 0, 1, 2)
+
+        g.AddVertex(2)
+        g.AddVertex(3)
+        g.AddVertex(4)
+        g.AddEdge(1, 2)
+        g.AddEdge(2, 3)
+        g.AddEdge(3, 4)
+        self.check_path(g, g.BreadthFirstSearch(0, 4), 0, 4, 5)
+        self.check_path(g, g.BreadthFirstSearch(3, 1), 3, 1, 3)
+
+        g.AddVertex(5)
+        g.AddVertex(6)
+        g.AddVertex(7)
+        g.AddEdge(1, 5)
+        g.AddEdge(2, 6)
+        g.AddEdge(3, 7)
+        self.check_path(g, g.BreadthFirstSearch(4, 5), 4, 5, 5)
+        self.check_path(g, g.BreadthFirstSearch(4, 6), 4, 6, 4)
+        self.check_path(g, g.BreadthFirstSearch(4, 7), 4, 7, 3)
+
+        g.AddVertex(8)
+        g.AddEdge(8, 5)
+        g.AddEdge(8, 6)
+        g.AddEdge(8, 7)
+        length = [
+            [1, 2, 3, 4, 5, 3, 4, 5, 4],
+            [2, 1, 2, 3, 4, 2, 3, 4, 3],
+            [3, 2, 1, 2, 3, 3, 2, 3, 4],
+            [4, 3, 2, 1, 2, 4, 3, 2, 3],
+            [5, 4, 3, 2, 1, 5, 4, 3, 4],
+            [3, 2, 3, 4, 5, 1, 3, 3, 2],
+            [4, 3, 2, 3, 4, 3, 1, 3, 2],
+            [5, 4, 3, 2, 3, 3, 3, 1, 2],
+            [4, 3, 4, 3, 4, 2, 2, 2, 1],
+        ]
+        for i in range(8):
+            for j in range(8):
+                self.check_path(g, g.BreadthFirstSearch(i, j), i, j, length[i][j])
 
 
 if __name__ == "__main__":
