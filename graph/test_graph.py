@@ -279,5 +279,54 @@ class Test(unittest.TestCase):
         ])
 
 
+class TestSearch(unittest.TestCase):
+
+    def check_path(self, g, vertices, start, finish):
+        self.assertEqual(vertices[0].Value, start)
+        self.assertEqual(vertices[-1].Value, finish)
+        for i in range(1, len(vertices)):
+            self.assertTrue(g.IsEdge(vertices[i - 1].Value, vertices[i].Value))
+
+
+    def test_depth(self):
+        g = SimpleGraph(10)
+        
+        g.AddVertex(0)
+        self.check_path(g, g.DepthFirstSearch(0, 0), 0, 0)
+        
+        g.AddVertex(1)
+        self.assertEqual(g.DepthFirstSearch(0, 1), [])
+        g.AddEdge(0, 1)
+        self.check_path(g, g.DepthFirstSearch(0, 0), 0, 0)
+        self.check_path(g, g.DepthFirstSearch(0, 1), 0, 1)
+
+        g.AddVertex(2)
+        g.AddVertex(3)
+        g.AddVertex(4)
+        g.AddEdge(1, 2)
+        g.AddEdge(2, 3)
+        g.AddEdge(3, 4)
+        self.check_path(g, g.DepthFirstSearch(0, 4), 0, 4)
+        self.check_path(g, g.DepthFirstSearch(3, 1), 3, 1)
+
+        g.AddVertex(5)
+        g.AddVertex(6)
+        g.AddVertex(7)
+        g.AddEdge(1, 5)
+        g.AddEdge(2, 6)
+        g.AddEdge(3, 7)
+        self.check_path(g, g.DepthFirstSearch(4, 5), 4, 5)
+        self.check_path(g, g.DepthFirstSearch(4, 6), 4, 6)
+        self.check_path(g, g.DepthFirstSearch(4, 7), 4, 7)
+
+        g.AddVertex(8)
+        g.AddEdge(8, 5)
+        g.AddEdge(8, 6)
+        g.AddEdge(8, 7)
+        for i in range(8):
+            for j in range(8):
+                self.check_path(g, g.DepthFirstSearch(i, j), i, j)
+
+
 if __name__ == "__main__":
     unittest.main()
