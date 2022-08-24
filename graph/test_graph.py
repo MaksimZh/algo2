@@ -380,5 +380,52 @@ class TestSearch(unittest.TestCase):
                 self.check_path(g, g.BreadthFirstSearch(i, j), i, j, length[i][j])
 
 
+class TestWeak(unittest.TestCase):
+
+    def check_vertices(self, vertices, values):
+        vertex_values = [v.Value for v in vertices]
+        self.assertEqual(set(vertex_values), set(values))
+
+    def test(self):
+        g = SimpleGraph(10)
+        self.check_vertices(g.WeakVertices(), [])
+        
+        g.AddVertex(0)
+        self.check_vertices(g.WeakVertices(), [0])
+
+        g.AddVertex(1)
+        g.AddEdge(0, 1)
+        self.check_vertices(g.WeakVertices(), [0, 1])
+
+        g.AddVertex(2)
+        g.AddEdge(0, 2)
+        self.check_vertices(g.WeakVertices(), [0, 1, 2])
+
+        g.AddVertex(3)
+        g.AddEdge(1, 3)
+        g.AddEdge(2, 3)
+        self.check_vertices(g.WeakVertices(), [0, 1, 2, 3])
+        
+        g.AddEdge(0, 3)
+        self.check_vertices(g.WeakVertices(), [])
+
+        g.AddVertex(4)
+        g.AddVertex(5)
+        g.AddEdge(1, 4)
+        g.AddEdge(3, 5)
+        self.check_vertices(g.WeakVertices(), [4, 5])
+
+        g.AddVertex(6)
+        g.AddVertex(7)
+        g.AddVertex(8)
+        g.AddEdge(5, 6)
+        g.AddEdge(5, 7)
+        g.AddEdge(7, 8)
+        self.check_vertices(g.WeakVertices(), [4, 5, 6, 7, 8])
+        
+        g.AddEdge(6, 7)
+        self.check_vertices(g.WeakVertices(), [4, 8])
+
+
 if __name__ == "__main__":
     unittest.main()

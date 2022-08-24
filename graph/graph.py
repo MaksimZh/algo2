@@ -82,6 +82,21 @@ class SimpleGraph:
         return []
 
 
+    def WeakVertices(self):
+        vertex_indices = [i for i in range(self.max_vertex) \
+            if self.vertex[i] is not None]
+        for i in vertex_indices:
+            self.vertex[i].Hint = False
+        for i in vertex_indices:
+            if self.vertex[i].Hint:
+                continue
+            self.vertex[i].Hint = True
+            neighbor_indices = self.__not_visited_neighbors(i)
+            if not self.__mark_linked_pairs(neighbor_indices):
+                self.vertex[i].Hint = False
+        return [v for v in self.vertex if v is not None and not v.Hint]
+
+
     def __update_add_pos(self):
         for i in range(self.__add_pos, self.max_vertex):
             if self.vertex[i] is None:
@@ -103,6 +118,18 @@ class SimpleGraph:
     def __not_visited_neighbors(self, start):
         return [j for j in range(0, self.max_vertex) \
             if self.m_adjacency[start][j] == 1 and not self.vertex[j].Hint]
+
+    def __mark_linked_pairs(self, indices):
+        is_marked = False
+        for i in range(len(indices)):
+            v1 = indices[i]
+            for j in range(i + 1, len(indices)):
+                v2 = indices[j]
+                if self.m_adjacency[v1][v2] == 1:
+                    self.vertex[v1].Hint = True
+                    self.vertex[v2].Hint = True
+                    is_marked = True
+        return is_marked
 
 
 class _Stack:
