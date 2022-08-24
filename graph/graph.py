@@ -110,13 +110,13 @@ class SimpleGraph:
         return self.__vertex_next(start)
 
     def __vertex_next(self, start):
-        for j in range(0, self.max_vertex):
+        for j in range(self.max_vertex):
             if self.m_adjacency[start][j] == 1 and not self.vertex[j].Hint:
                 return j
         return None
 
     def __not_visited_neighbors(self, start):
-        return [j for j in range(0, self.max_vertex) \
+        return [j for j in range(self.max_vertex) \
             if self.m_adjacency[start][j] == 1 and not self.vertex[j].Hint]
 
     def __mark_linked_pairs(self, indices):
